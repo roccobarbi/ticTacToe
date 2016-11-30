@@ -78,7 +78,8 @@ public class TicTacToe {
 	
 	private boolean validateMove(int move){ // Returns true if the move is legal, false otherwise
 		boolean isLegal = false;
-		// Logic
+		if(move >= 0 && move < board.length && board[move] == 0)
+			isLegal = true;
 		return isLegal;
 	}
 	
@@ -110,12 +111,12 @@ public class TicTacToe {
 	 */
 	public void play(){
 		// Game Logic
-		// Spiega al giocatore chi è il primo (X) e chi è il secondo (O).
+		// Spiega al giocatore chi ï¿½ il primo (X) e chi ï¿½ il secondo (O).
 		// Decidi chi deve muovere.
 		// Fino alla prima mossa valida:
-			// Se è il computer
+			// Se ï¿½ il computer
 				// chooseMove();
-			// Se è il giocatore
+			// Se ï¿½ il giocatore
 				// askMove();
 			// In ogni caso: validateMove()
 		// checkVictory();
