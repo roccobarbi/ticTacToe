@@ -101,6 +101,9 @@ public class TicTacToe {
 		float value = 0; // tree starting value is always 0
 		float solution = 0;
 		if(depth % 2 == 0){ // The computer is playing
+			if(checkVictory(innerBoard) == computer){
+				return 1;
+			}
 			for(int i = 0; i < innerBoard.length; i++){
 				if(innerBoard[i] == 0){ // the move is playable
 					innerBoard[i] = computer;
@@ -117,7 +120,23 @@ public class TicTacToe {
 			}
 		}
 		else{ // The opponent is playing
-			//
+			if(checkVictory(innerBoard) == human){
+				return -1;
+			}
+			for(int i = 0; i < innerBoard.length; i++){
+				if(innerBoard[i] == 0){ // the move is playable
+					innerBoard[i] = human;
+					solution = evaluateTree(i, depth + 1, innerBoard);
+					if(solution < 0){
+						innerBoard[i] = 0; // Reset
+						return 0; // ERROR
+					}
+					else{
+						innerBoard[i] = 0; // Reset for the next iterations
+						value += solution / 2; // To account for distance
+					}
+				}
+			}
 		}
 		return value;
 	}
@@ -135,7 +154,7 @@ public class TicTacToe {
 		return isLegal;
 	}
 	
-	private int checkVictory(){ // 0 = nobody, or 1, or 2.
+	private int checkVictory(int[] innerBoard){ // 0 = nobody, or 1, or 2.
 		int victor = 0;
 		// Logic
 		return victor;
