@@ -64,10 +64,39 @@ public class TicTacToe {
 	
 	// Private methods
 	
-	private int chooseMove(){ // Returns the move by the computer
-		int move = 0;
-		// Logic
+	private int chooseMove(){
+		int move = board.length / 2; // Default move
+		float currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
+		for(int i = 0; i < board.length; i++){
+			if(validateMove(i)){
+				currentValue = evaluateTree(i);
+				if(currentValue > maxValue){
+					move = i;
+					maxValue = currentValue;
+				}
+				else if(maxValue == 0 && !validateMove(move)){
+					move = i;
+				}
+			}
+		}
 		return move;
+	}
+	
+	/* 
+	 * Evaluate tree: takes a move and returns the score for the subsequent decision tree
+	 * At each step:
+	 * - an invalid move returns 0;
+	 * - a move that puts the opponent in a winning position returns 0;
+	 * - an opponent's winning move returns -1;
+	 * - a winning move returns 1;
+	 * - anything else returns the sum of what the donwstream moves returned;
+	 * - exception: the opponent's move returns that divided by 2 to account for distance.
+	 */
+	private float evaluateTree(int move){
+		float value = 0; // valore dell'albero
+		int depth = 0; // 0 = move, 1 = opponent's first move, 2...
+		// Logic
+		return value;
 	}
 	
 	private int askMove(){ // Asks the move to the player and validates it
