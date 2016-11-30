@@ -67,9 +67,13 @@ public class TicTacToe {
 	private int chooseMove(){
 		int move = board.length / 2; // Default move
 		float currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
+		int tempBoard[] = new int[board.length];
+		for(int i = 0; i < board.length; i++){ // This will be used by evaluateTree
+			tempBoard[i] = board[i];
+		}
 		for(int i = 0; i < board.length; i++){
 			if(validateMove(i)){
-				currentValue = evaluateTree(i);
+				currentValue = evaluateTree(i, 0, tempBoard);
 				if(currentValue > maxValue){
 					move = i;
 					maxValue = currentValue;
@@ -92,10 +96,29 @@ public class TicTacToe {
 	 * - anything else returns the sum of what the donwstream moves returned;
 	 * - exception: the opponent's move returns that divided by 2 to account for distance.
 	 */
-	private float evaluateTree(int move){
-		float value = 0; // valore dell'albero
-		int depth = 0; // 0 = move, 1 = opponent's first move, 2...
-		// Logic
+	private float evaluateTree(int move, int depth, int[] innerBoard){
+		// depth 0 = computer's first move move, 1 = opponent's first move, 2...
+		float value = 0; // tree starting value is always 0
+		float solution = 0;
+		if(depth % 2 == 0){ // The computer is playing
+			for(int i = 0; i < innerBoard.length; i++){
+				if(innerBoard[i] == 0){ // the move is playable
+					innerBoard[i] = computer;
+					solution = evaluateTree(i, depth + 1, innerBoard);
+					if(solution < 0){
+						innerBoard[i] = 0; // Reset
+						return 0; // The opponent wins, this counts as an invalid move to me
+					}
+					else{
+						innerBoard[i] = 0; // Reset for the next iterations
+						value += solution;
+					}
+				}
+			}
+		}
+		else{ // The opponent is playing
+			//
+		}
 		return value;
 	}
 	
