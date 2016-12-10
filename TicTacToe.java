@@ -178,7 +178,7 @@ public class TicTacToe {
 		return isLegal;
 	}
 	
-	private int (int[] innerBoard){ // 0 = nobody, or 1, or 2.
+	private int checkVictory(int[] innerBoard){ // 0 = nobody, or 1, or 2.
 		int victor = 0;
 		// Logic
 		return victor;
