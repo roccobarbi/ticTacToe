@@ -18,7 +18,8 @@ public class TicTacToe {
 	
 	// Private fields
 	private int board[];
-	private int computer, human, currentMove;
+	private int computer, human; // Each holds the number that identifies each player (1 or 2)
+	private int currentMove, winner; // Identify who should move now and who won the game
 	private long timeStart, timeEnd, duration, iterations;
 	
 	
@@ -32,8 +33,10 @@ public class TicTacToe {
 		// Choose randomly who plays first.
 		computer = (int) Math.round(Math.random()) + 1;
 		human = computer == 1 ? 2 : 1;
+		winner = 0;
 		// Zeroes the counters
-		timeStart = timeEnd = duration = iterations = currentMove = 0;
+		timeStart = timeEnd = duration = iterations = 0;
+		currentMove = 1;
 	}
 	
 	// Accessors
@@ -68,6 +71,10 @@ public class TicTacToe {
 	
 	public int getHuman(){
 		return human;
+	}
+	
+	public int getWinner(){
+		return winner;
 	}
 	
 	private void setTimeStart(long timeNew){
@@ -180,7 +187,34 @@ public class TicTacToe {
 	
 	private int checkVictory(int[] innerBoard){ // 0 = nobody, or 1, or 2.
 		int victor = 0;
-		// Logic
+		if((innerBoard[0] != 0) && // check first diagonal
+				innerBoard[0] == innerBoard[4] &&
+				innerBoard[0] == innerBoard[8]){
+			victor = innerBoard[0];
+		}
+		if(victor == 0 && (innerBoard[2] != 0) && // check second diagonal
+				innerBoard[0] == innerBoard[4] &&
+				innerBoard[0] == innerBoard[6]){
+			victor = innerBoard[0];
+		}
+		if(victor == 0){ // Check rows
+			for(int i = 0; i < 7; i += 3){
+				if((innerBoard[i] != 0) &&
+						innerBoard[i] == innerBoard[i + 1] &&
+						innerBoard[i] == innerBoard[i + 2]){
+					victor = innerBoard[i];
+				}
+			}
+		}
+		if(victor == 0){ // check columns
+			for(int i = 0; i < 3; i++){
+				if((innerBoard[i] != 0) &&
+						innerBoard[i] == innerBoard[i + 3] &&
+						innerBoard[i] == innerBoard[i + 6]){
+					victor = innerBoard[i];
+				}
+			}
+		}
 		return victor;
 	}
 	
@@ -197,8 +231,10 @@ public class TicTacToe {
 		// Choose randomly who plays first.
 		computer = (int) Math.round(Math.random()) + 1;
 		human = computer == 1 ? 2 : 1;
+		winner = 0;
 		// Zeroes the counters
-		timeStart = timeEnd = duration = iterations = currentMove = 0;
+		timeStart = timeEnd = duration = iterations = 0;
+		currentMove = 1;
 	}
 	
 	/**
@@ -213,15 +249,17 @@ public class TicTacToe {
 			System.out.println("Tu giochi per primo con il numero " + human);
 			System.out.println("Il computer gioca per secondo con il numero " + computer);
 		}
-		// Decidi chi deve muovere.
-		// Fino alla prima mossa valida:
-			// Se � il computer
-				// chooseMove();
-			// Se � il giocatore
-				// askMove();
-			// In ogni caso: validateMove()
-		// checkVictory();
-		// Mostra il tabellone
+		while(winner == 0){ // Continua a giocare finché non emerge un vincitore
+			if(currentMove == human){
+				// ask move
+			}
+			else{
+				// choose move
+			}
+			// validate move
+			winner = checkVictory(board);
+			// show current board
+		}
 	}
 
 	// main method
