@@ -197,7 +197,7 @@ public class TicTacToe {
 	// main method
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
-		boolean play = false, repeatInput = true;
+		boolean play = true, repeatInput = true;
 		String input;
 		TicTacToe game = new TicTacToe();
 		
@@ -209,52 +209,33 @@ public class TicTacToe {
 		System.out.println("---------");
 		System.out.println("7 | 8 | 9");
 		System.out.println("When your turn is called, you will have to enter your move and press ENTER.");
-		while(repeatInput){
-			System.out.println("Are you ready to play? [y|n]");
-			System.out.println(">:");
-			input = keyboard.nextLine();
-			if(input.length() == 1){
-				switch(input.charAt(0)){
-				case 'y':
-					play = true;
-					repeatInput = false;
-					break;
-				case 'n':
-					play = false;
-					repeatInput = false;
-					break;
-				default:
-					System.out.println("ERROR: invalid input.");
-					play = false;
-					repeatInput = true;
-				}
-			}
-		}
+		
 		while(play){
 			game.play();
-			
+			// Check if the player wants to play again. Default: yes.
 			repeatInput = true;
 			while(repeatInput){
 				System.out.println("Do you want to play again? [y|n]");
 				System.out.println(">:");
 				input = keyboard.nextLine();
-				if(input.length() == 1){
-					switch(input.charAt(0)){
-					case 'y':
-						play = true;
-						repeatInput = false;
-						break;
+				if(input.length() > 0){
+					switch(input.toLowerCase().charAt(0)){
 					case 'n':
-						play = false;
+						play = false; // No need to break, case 'y' has only one condition and it's good for 'n' too
+					case 'y':
 						repeatInput = false;
 						break;
 					default:
 						System.out.println("ERROR: invalid input.");
-						play = false;
 						repeatInput = true;
 					}
 				}
+				else{
+					System.out.println("ERROR: invalid input.");
+					repeatInput = true;
+				}
 			}
+			if(play) game.reset(); // Only if the user plays again, reset the board for the next iteration.
 		}
 	}
 
