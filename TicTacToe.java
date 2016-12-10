@@ -107,15 +107,18 @@ public class TicTacToe {
 		if(boardSum != 0){
 			for(int i = 0; i < board.length; i++){
 				if(validateMove(i)){
+					tempBoard[i] = computer; // Assign the move to the temporary board
 					currentValue = evaluateTree(i, 0, tempBoard);
 					if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
-					if(currentValue > maxValue){
+					if((currentValue > 0.99 && currentValue < 1.01) || 
+							((maxValue < 0.99 || maxValue > 1.01) && currentValue > maxValue)){
 						move = i;
 						maxValue = currentValue;
 					}
 					else if(maxValue == 0 && !validateMove(move)){
 						move = i;
 					}
+					tempBoard[i] = 0; // Zero it
 				}
 			}
 		}
@@ -148,7 +151,7 @@ public class TicTacToe {
 			}
 			for(int i = 0; i < innerBoard.length; i++){
 				if(innerBoard[i] == 0){ // the move is playable
-					innerBoard[i] = computer;
+					innerBoard[i] = human;
 					solution = evaluateTree(i, depth + 1, innerBoard);
 					if(solution < 0){
 						innerBoard[i] = 0; // Reset
@@ -167,7 +170,7 @@ public class TicTacToe {
 			}
 			for(int i = 0; i < innerBoard.length; i++){
 				if(innerBoard[i] == 0){ // the move is playable
-					innerBoard[i] = human;
+					innerBoard[i] = computer;
 					solution = evaluateTree(i, depth + 1, innerBoard);
 					if(solution < 0){
 						innerBoard[i] = 0; // Reset
