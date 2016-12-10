@@ -279,10 +279,10 @@ public class TicTacToe {
 		}
 		while(winner == 0){ // Continua a giocare finché non emerge un vincitore
 			if(currentMove == human){
-				askMove();
+				board[askMove()] = human;
 			}
 			else{
-				chooseMove();
+				board[chooseMove()] = computer;
 			}
 			winner = checkVictory(board);
 			printBoard(); // show current board
