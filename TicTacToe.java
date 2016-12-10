@@ -232,7 +232,7 @@ public class TicTacToe {
 			repeatInput = true;
 			while(repeatInput){
 				System.out.println("Do you want to play again? [y|n]");
-				System.out.println(">:");
+				System.out.print(">:");
 				input = keyboard.nextLine();
 				if(input.length() > 0){
 					switch(input.toLowerCase().charAt(0)){
