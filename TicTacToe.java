@@ -174,7 +174,21 @@ public class TicTacToe {
 	
 	private int askMove(){ // Asks the move to the player and validates it
 		int move = 0;
-		// Logic
+		boolean isValidMove = false;
+		Scanner keyboard = new Scanner(System.in);
+		while(!isValidMove){
+			System.out.println();
+			System.out.println("Inserisci la tua mossa e premi invio:");
+			System.out.print(">: ");
+			if(keyboard.hasNextInt()){
+				move = keyboard.nextInt() - 1;
+				isValidMove = validateMove(move);
+				if(!isValidMove) System.out.println("Mossa non valida.");
+			}
+			else{
+				System.out.println("ERRORE: input non valido. Devi inserire il numero di una casella da 1 a 9");
+			}
+		}
 		return move;
 	}
 	
@@ -259,6 +273,7 @@ public class TicTacToe {
 			// validate move
 			winner = checkVictory(board);
 			// show current board
+			currentMove = currentMove == 1 ? 2 : 1; // New turn, new player.
 		}
 	}
 
