@@ -62,6 +62,14 @@ public class TicTacToe {
 		return iterations;
 	}
 	
+	public int getComputer(){
+		return computer;
+	}
+	
+	public int getHuman(){
+		return human;
+	}
+	
 	private void setTimeStart(long timeNew){
 		timeStart = timeNew;
 	}
@@ -170,7 +178,7 @@ public class TicTacToe {
 		return isLegal;
 	}
 	
-	private int checkVictory(int[] innerBoard){ // 0 = nobody, or 1, or 2.
+	private int (int[] innerBoard){ // 0 = nobody, or 1, or 2.
 		int victor = 0;
 		// Logic
 		return victor;
@@ -197,8 +205,14 @@ public class TicTacToe {
 	 * Plays the game.
 	 */
 	public void play(){
-		// Game Logic
-		// Spiega al giocatore chi � il primo (X) e chi � il secondo (O).
+		if(computer < human){
+			System.out.println("Il computer gioca per primo con il numero " + computer);
+			System.out.println("Tu giochi per secondo con il numero " + human);
+		}
+		else{
+			System.out.println("Tu giochi per primo con il numero " + human);
+			System.out.println("Il computer gioca per secondo con il numero " + computer);
+		}
 		// Decidi chi deve muovere.
 		// Fino alla prima mossa valida:
 			// Se � il computer
