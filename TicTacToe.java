@@ -188,6 +188,7 @@ public class TicTacToe {
 			else{
 				System.out.println("ERRORE: input non valido. Devi inserire il numero di una casella da 1 a 9");
 			}
+			keyboard.nextLine(); // Flushes the line.
 		}
 		return move;
 	}
@@ -234,6 +235,19 @@ public class TicTacToe {
 	
 	// Public methods
 	/**
+	 * Prints the current board to the screen
+	 */
+	public void printBoard(){
+		System.out.println();
+		System.out.println(board[0] + " | " + board[1] + " | " + board[2]);
+		System.out.println("---------");
+		System.out.println(board[3] + " | " + board[4] + " | " + board[5]);
+		System.out.println("---------");
+		System.out.println(board[6] + " | " + board[7] + " | " + board[8]);
+		System.out.println();
+	}
+	
+	/**
 	 * Resets the game.
 	 */
 	public void reset(){
@@ -265,14 +279,13 @@ public class TicTacToe {
 		}
 		while(winner == 0){ // Continua a giocare finché non emerge un vincitore
 			if(currentMove == human){
-				// ask move
+				askMove();
 			}
 			else{
-				// choose move
+				chooseMove();
 			}
-			// validate move
 			winner = checkVictory(board);
-			// show current board
+			printBoard(); // show current board
 			currentMove = currentMove == 1 ? 2 : 1; // New turn, new player.
 		}
 	}
