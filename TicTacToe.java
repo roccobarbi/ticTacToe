@@ -62,12 +62,26 @@ public class TicTacToe {
 		return iterations;
 	}
 	
+	private void setTimeStart(long timeNew){
+		timeStart = timeNew;
+	}
+	
+	private void setTimeEnd(long timeNew){
+		timeEnd = timeNew;
+	}
+	
+	private void setDuration(){
+		if(timeEnd > timeStart) duration = timeEnd - timeStart;
+		else duration = 0;
+	}
+	
 	// Private methods
 	
 	private int chooseMove(){
 		int move = board.length / 2; // Default move
 		float currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
 		int tempBoard[] = new int[board.length];
+		setTimeStart(System.currentTimeMillis()); // Log the start time of the evaluation phase
 		for(int i = 0; i < board.length; i++){ // This will be used by evaluateTree
 			tempBoard[i] = board[i];
 		}
@@ -83,6 +97,8 @@ public class TicTacToe {
 				}
 			}
 		}
+		setTimeEnd(System.currentTimeMillis()); // Log the end time of the evaluation phase
+		setDuration();
 		return move;
 	}
 	
