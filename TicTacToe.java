@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class TicTacToe {
 	// Constants
 	private static final int BOARD_SIZE = 3; // Lato del tabellone
+	private static final boolean DEBUG = true; // Debug mode
 	
 	// Private fields
 	private int board[];
@@ -96,21 +97,30 @@ public class TicTacToe {
 		int move = board.length / 2; // Default move
 		float currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
 		int tempBoard[] = new int[board.length];
+		int boardSum = 0; // Checks if all cells are empty and moves to center.
+		iterations = 0;
 		setTimeStart(System.currentTimeMillis()); // Log the start time of the evaluation phase
 		for(int i = 0; i < board.length; i++){ // This will be used by evaluateTree
 			tempBoard[i] = board[i];
+			boardSum += tempBoard[i];
 		}
-		for(int i = 0; i < board.length; i++){
-			if(validateMove(i)){
-				currentValue = evaluateTree(i, 0, tempBoard);
-				if(currentValue > maxValue){
-					move = i;
-					maxValue = currentValue;
-				}
-				else if(maxValue == 0 && !validateMove(move)){
-					move = i;
+		if(boardSum != 0){
+			for(int i = 0; i < board.length; i++){
+				if(validateMove(i)){
+					currentValue = evaluateTree(i, 0, tempBoard);
+					if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
+					if(currentValue > maxValue){
+						move = i;
+						maxValue = currentValue;
+					}
+					else if(maxValue == 0 && !validateMove(move)){
+						move = i;
+					}
 				}
 			}
+		}
+		else{
+			move = board.length / 2;
 		}
 		setTimeEnd(System.currentTimeMillis()); // Log the end time of the evaluation phase
 		setDuration();
@@ -131,6 +141,7 @@ public class TicTacToe {
 		// depth 0 = computer's first move move, 1 = opponent's first move, 2...
 		float value = 0; // tree starting value is always 0
 		float solution = 0;
+		iterations++;
 		if(depth % 2 == 0){ // The computer is playing
 			if(checkVictory(innerBoard) == computer){
 				return 1;
@@ -283,6 +294,8 @@ public class TicTacToe {
 			}
 			else{
 				board[chooseMove()] = computer;
+				if(DEBUG) System.out.println("Duration: " + getDuration() + " ms");
+				if(DEBUG) System.out.println("Iterations: " + getIterations());
 			}
 			winner = checkVictory(board);
 			printBoard(); // show current board
