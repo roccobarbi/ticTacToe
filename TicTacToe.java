@@ -223,8 +223,8 @@ public class TicTacToe {
 			victor = innerBoard[0];
 		}
 		if(victor == 0 && (innerBoard[2] != 0) && // check second diagonal
-				innerBoard[0] == innerBoard[4] &&
-				innerBoard[0] == innerBoard[6]){
+				innerBoard[2] == innerBoard[4] &&
+				innerBoard[2] == innerBoard[6]){
 			victor = innerBoard[0];
 		}
 		if(victor == 0){ // Check rows
