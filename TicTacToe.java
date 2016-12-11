@@ -108,7 +108,7 @@ public class TicTacToe {
 			if(validateMove(i)){
 				tempBoard[i] = human; // Check if a move here would get a win to the opponent
 				if(checkVictory(tempBoard) == human){
-					currentValue = 0.5; // Start from a higher current value.
+					currentValue = 0.75; // Start from a higher current value.
 					if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss found! Current value: " + currentValue);
 				}
 				else{
@@ -159,14 +159,8 @@ public class TicTacToe {
 				if(innerBoard[i] == 0){ // the move is playable
 					innerBoard[i] = human;
 					solution = evaluateTree(i, depth + 1, innerBoard);
-					if(solution < 0){
-						innerBoard[i] = 0; // Reset
-						return 0; // The opponent wins, this counts as an invalid move to me
-					}
-					else{
-						innerBoard[i] = 0; // Reset for the next iterations
-						if(value == 0 || solution < value) value = solution;
-					}
+					innerBoard[i] = 0; // Reset for the next iterations
+					if(value == 0 || solution < value) value = solution;
 				}
 			}
 		}
@@ -178,18 +172,12 @@ public class TicTacToe {
 				if(innerBoard[i] == 0){ // the move is playable
 					innerBoard[i] = computer;
 					solution = evaluateTree(i, depth + 1, innerBoard);
-					if(solution < 0){
-						innerBoard[i] = 0; // Reset
-						return 0; // ERROR
-					}
-					else{
-						innerBoard[i] = 0; // Reset for the next iterations
-						if(solution > value) value = solution;
-					}
+					innerBoard[i] = 0; // Reset for the next iterations
+					if(solution > value) value = solution;
 				}
 			}
-			value *= 0.49; // To account for distance and make it unlikely that I have a fake instant win
 		}
+		value *= 0.49; // To account for distance and make it unlikely that I have a fake instant win
 		return value;
 	}
 	
@@ -316,6 +304,16 @@ public class TicTacToe {
 			winner = checkVictory(board);
 			printBoard(); // show current board
 			currentMove = currentMove == 1 ? 2 : 1; // New turn, new player.
+		}
+		if(winner == -1){ // Tied game
+			System.out.println();
+			System.out.println("The game is tied: nobody won.");
+			System.out.println();
+		}
+		else{ // Somebody won the game
+			System.out.println();
+			System.out.println((winner == human ? "You" : "The computer") + " won the game.");
+			System.out.println();
 		}
 	}
 
