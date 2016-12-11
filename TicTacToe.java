@@ -115,6 +115,10 @@ public class TicTacToe {
 					else{
 						currentValue = 0; // Zero the current value.
 						if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss not found! Current value: " + currentValue);
+						if(DEBUG && i == 6) System.out.println("3: " + tempBoard[2] + " - 5: " + tempBoard[4] + " - 7: " + tempBoard[6]);
+						if(DEBUG && i == 6) System.out.println("checkVictory(tempBoard) = " + checkVictory(tempBoard));
+						if(DEBUG && i == 6) System.out.println("human = " + human);
+						if(DEBUG && i == 6) System.out.println("checkVictory(tempBoard) == human = " + (checkVictory(tempBoard) == human ? "true" : "false"));
 					}
 					tempBoard[i] = computer; // Assign the move to the temporary board
 					currentValue += evaluateTree(i, 0, tempBoard);
@@ -233,7 +237,7 @@ public class TicTacToe {
 		if(victor == 0 && (innerBoard[2] != 0) && // check second diagonal
 				innerBoard[2] == innerBoard[4] &&
 				innerBoard[2] == innerBoard[6]){
-			victor = innerBoard[0];
+			victor = innerBoard[2];
 		}
 		if(victor == 0){ // Check rows
 			for(int i = 0; i < 7; i += 3){
