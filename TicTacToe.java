@@ -159,7 +159,7 @@ public class TicTacToe {
 					}
 					else{
 						innerBoard[i] = 0; // Reset for the next iterations
-						value += solution;
+						if(value == 0 || solution < value) value = solution;
 					}
 				}
 			}
@@ -178,10 +178,11 @@ public class TicTacToe {
 					}
 					else{
 						innerBoard[i] = 0; // Reset for the next iterations
-						value += solution / 2; // To account for distance
+						if(solution > value) value = solution;
 					}
 				}
 			}
+			solution /= 2; // To account for distance
 		}
 		return value;
 	}
@@ -214,7 +215,7 @@ public class TicTacToe {
 		return isLegal;
 	}
 	
-	private int checkVictory(int[] innerBoard){ // 0 = nobody, or 1, or 2.
+	private int checkVictory(int[] innerBoard){ // 0 = nobody yet, -1 = tied game, or 1, or 2.
 		int victor = 0;
 		if((innerBoard[0] != 0) && // check first diagonal
 				innerBoard[0] == innerBoard[4] &&
@@ -242,6 +243,12 @@ public class TicTacToe {
 						innerBoard[i] == innerBoard[i + 6]){
 					victor = innerBoard[i];
 				}
+			}
+		}
+		if(victor == 0){
+			victor = -1; // Assume a tie
+			for(int position : innerBoard){
+				if(position == 0) victor = 0; // Correct it if it is not a tie
 			}
 		}
 		return victor;
