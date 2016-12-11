@@ -119,8 +119,7 @@ public class TicTacToe {
 					tempBoard[i] = computer; // Assign the move to the temporary board
 					currentValue += evaluateTree(i, 0, tempBoard);
 					if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
-					if((currentValue > 0.99 && currentValue < 1.01) || 
-							((maxValue < 0.99 || maxValue > 1.01) && currentValue > maxValue)){
+					if(currentValue > maxValue){
 						move = i;
 						maxValue = currentValue;
 					}
