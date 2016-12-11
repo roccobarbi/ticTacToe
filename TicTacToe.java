@@ -94,7 +94,7 @@ public class TicTacToe {
 	// Private methods
 	private int chooseMove2(){ // To record the iterations and duration for debugging purposes
 		int move = board.length / 2; // Default move
-		int currentScore = 0, maxScore = 0;
+		int currentScore = 0, maxScore = -100;
 		
 		// Local copy of the board
 		int tempBoard[] = new int[board.length];
@@ -106,6 +106,7 @@ public class TicTacToe {
 		setTimeStart(System.currentTimeMillis()); // Log the start time of the evaluation phase
 		
 		for(int i = 0; i < 9; i++){
+			if(DEBUG) System.out.println("validateMove for " + i + " returns " + validateMove(i));
 			if(validateMove(i)){ // The move is playable
 				tempBoard[i] = computer;
 				currentScore = evaluateTree2(tempBoard, 0);
@@ -114,24 +115,27 @@ public class TicTacToe {
 					move = i;
 				}
 				tempBoard[i] = 0;
+				if(DEBUG) System.out.println(i + " -> " + currentScore);
 			}
 		}
 		
 		setTimeEnd(System.currentTimeMillis()); // Log the end time of the evaluation phase
 		setDuration();
+		if(DEBUG) System.out.println("move -> " + move);
 		return move;
 	}
 	
-	private int evaluateTree2(int board[], int depth){ // A better, self-contained version
+	private int evaluateTree2(int tempBoard[], int depth){ // A better, self-contained version
 		int score = 0, currentScore = 0;
 		boolean noMovesAvailable = true; // Default: the game is a draw at this stage
+		boolean scoreChanged = false;
 		iterations++;
 		
-		// Local copy of the board
+		/*// Local copy of the board
 		int tempBoard[] = new int[board.length];
 		for(int i = 0; i < board.length; i++){
 			tempBoard[i] = board[i];
-		}
+		}*/
 		
 		if(checkVictory(tempBoard) == human){ // Caso base: vince l'avversario
 			return depth - 11;
@@ -147,21 +151,18 @@ public class TicTacToe {
 			if(tempBoard[i] == 0){ // The move is playable
 				noMovesAvailable = false;
 				
-				if(depth % 2 == 0){ // The next move is human
-					tempBoard[i] = human;
-				}
-				else{ // The next move is the computer's
-					tempBoard[i] = computer;
-				}
+				if(depth % 2 == 0) tempBoard[i] = human; // The next move is human
+				else tempBoard[i] = computer; // The next move is the computer's
 				
 				currentScore = evaluateTree2(tempBoard, depth + 1);
 				
-				if(depth % 2 == 0){ // This is the computer's move
-					if(currentScore > score) score = currentScore;
+				if(!scoreChanged) score = currentScore; // Default
+				else{
+					if(depth % 2 == 0 && currentScore < score) score = currentScore; // This is the computer's move
+					else if(depth % 2 != 0 && currentScore > score) score = currentScore; // This is the player's move
 				}
-				else{ // This is the player's move
-					if(currentScore < score) score = currentScore;
-				}
+				
+				scoreChanged = true;
 				
 				tempBoard[i] = 0;
 			}
@@ -170,7 +171,6 @@ public class TicTacToe {
 		if(noMovesAvailable){ // Caso base di riserva: non ci sono mosse disponibili 
 			return 10 - depth;
 		}
-		
 		return score;
 	}
 	
