@@ -118,7 +118,7 @@ public class TicTacToe {
 				tempBoard[i] = computer; // Assign the move to the temporary board
 				currentValue += evaluateTree(i, 0, tempBoard);
 				if(boardSum == 0 && i == board.length / 2){
-					currentValue += 0.1; // Bias towards a first move at the centre
+					currentValue += 0.1; // Bias towards a first move at the center
 				}
 				if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
 				if(currentValue > maxValue){
@@ -146,10 +146,11 @@ public class TicTacToe {
 	 * - anything else returns the sum of what the donwstream moves returned;
 	 * - exception: the opponent's move returns that divided by 2 to account for distance.
 	 */
-	private float evaluateTree(int move, int depth, int[] innerBoard){
+	private double evaluateTree(int move, int depth, int[] innerBoard){
 		// depth 0 = computer's first move move, 1 = opponent's first move, 2...
-		float value = 0; // tree starting value is always 0
-		float solution = 0;
+		double value = 0; // tree starting value is always 0
+		double solution = 0;
+		boolean noMoreMoves = true; // Default: there are no available moves
 		iterations++;
 		if(depth % 2 == 0){ // The computer is playing
 			if(checkVictory(innerBoard) == computer){
@@ -157,6 +158,7 @@ public class TicTacToe {
 			}
 			for(int i = 0; i < innerBoard.length; i++){
 				if(innerBoard[i] == 0){ // the move is playable
+					noMoreMoves = false; // There are available moves 
 					innerBoard[i] = human;
 					solution = evaluateTree(i, depth + 1, innerBoard);
 					innerBoard[i] = 0; // Reset for the next iterations
@@ -170,6 +172,7 @@ public class TicTacToe {
 			}
 			for(int i = 0; i < innerBoard.length; i++){
 				if(innerBoard[i] == 0){ // the move is playable
+					noMoreMoves = false; // There are available moves
 					innerBoard[i] = computer;
 					solution = evaluateTree(i, depth + 1, innerBoard);
 					innerBoard[i] = 0; // Reset for the next iterations
@@ -177,7 +180,7 @@ public class TicTacToe {
 				}
 			}
 		}
-		value *= 0.49; // To account for distance and make it unlikely that I have a fake instant win
+		if(noMoreMoves) value = 0.5; // A tie is better than a loss, but worse than a win
 		return value;
 	}
 	
