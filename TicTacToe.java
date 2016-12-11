@@ -104,38 +104,32 @@ public class TicTacToe {
 			tempBoard[i] = board[i];
 			boardSum += tempBoard[i];
 		}
-		if(boardSum != 0){
-			for(int i = 0; i < board.length; i++){
-				if(validateMove(i)){
-					tempBoard[i] = human; // Check if a move here would get a win to the opponent
-					if(checkVictory(tempBoard) == human){
-						currentValue = 0.5; // Start from a higher current value.
-						if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss found! Current value: " + currentValue);
-					}
-					else{
-						currentValue = 0; // Zero the current value.
-						if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss not found! Current value: " + currentValue);
-						if(DEBUG && i == 6) System.out.println("3: " + tempBoard[2] + " - 5: " + tempBoard[4] + " - 7: " + tempBoard[6]);
-						if(DEBUG && i == 6) System.out.println("checkVictory(tempBoard) = " + checkVictory(tempBoard));
-						if(DEBUG && i == 6) System.out.println("human = " + human);
-						if(DEBUG && i == 6) System.out.println("checkVictory(tempBoard) == human = " + (checkVictory(tempBoard) == human ? "true" : "false"));
-					}
-					tempBoard[i] = computer; // Assign the move to the temporary board
-					currentValue += evaluateTree(i, 0, tempBoard);
-					if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
-					if(currentValue > maxValue){
-						move = i;
-						maxValue = currentValue;
-					}
-					else if(maxValue == 0 && !validateMove(move)){
-						move = i;
-					}
-					tempBoard[i] = 0; // Zero it
+		for(int i = 0; i < board.length; i++){
+			if(validateMove(i)){
+				tempBoard[i] = human; // Check if a move here would get a win to the opponent
+				if(checkVictory(tempBoard) == human){
+					currentValue = 0.5; // Start from a higher current value.
+					if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss found! Current value: " + currentValue);
 				}
+				else{
+					currentValue = 0; // Zero the current value.
+					if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss not found! Current value: " + currentValue);
+				}
+				tempBoard[i] = computer; // Assign the move to the temporary board
+				currentValue += evaluateTree(i, 0, tempBoard);
+				if(boardSum == 0 && i == board.length / 2){
+					currentValue += 0.1; // Bias towards a first move at the centre
+				}
+				if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
+				if(currentValue > maxValue){
+					move = i;
+					maxValue = currentValue;
+				}
+				else if(maxValue == 0 && !validateMove(move)){
+					move = i;
+				}
+				tempBoard[i] = 0; // Zero it
 			}
-		}
-		else{
-			move = board.length / 2;
 		}
 		setTimeEnd(System.currentTimeMillis()); // Log the end time of the evaluation phase
 		setDuration();
