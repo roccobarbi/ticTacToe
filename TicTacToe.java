@@ -95,7 +95,7 @@ public class TicTacToe {
 	
 	private int chooseMove(){
 		int move = board.length / 2; // Default move
-		float currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
+		double currentValue = 0, maxValue = 0; // the current and maximum tree evaluation up to now
 		int tempBoard[] = new int[board.length];
 		int boardSum = 0; // Checks if all cells are empty and moves to center.
 		iterations = 0;
@@ -107,8 +107,17 @@ public class TicTacToe {
 		if(boardSum != 0){
 			for(int i = 0; i < board.length; i++){
 				if(validateMove(i)){
+					tempBoard[i] = human; // Check if a move here would get a win to the opponent
+					if(checkVictory(tempBoard) == human){
+						currentValue = 0.5; // Start from a higher current value.
+						if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss found! Current value: " + currentValue);
+					}
+					else{
+						currentValue = 0; // Zero the current value.
+						if(DEBUG) System.out.println("Cell " + (i + 1) + " instant loss not found! Current value: " + currentValue);
+					}
 					tempBoard[i] = computer; // Assign the move to the temporary board
-					currentValue = evaluateTree(i, 0, tempBoard);
+					currentValue += evaluateTree(i, 0, tempBoard);
 					if(DEBUG) System.out.println("Cell " + (i + 1) + " = " + currentValue);
 					if((currentValue > 0.99 && currentValue < 1.01) || 
 							((maxValue < 0.99 || maxValue > 1.01) && currentValue > maxValue)){
@@ -182,7 +191,7 @@ public class TicTacToe {
 					}
 				}
 			}
-			solution /= 2; // To account for distance
+			value *= 0.49; // To account for distance and make it unlikely that I have a fake instant win
 		}
 		return value;
 	}
